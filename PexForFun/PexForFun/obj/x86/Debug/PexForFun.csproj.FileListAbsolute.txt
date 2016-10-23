@@ -1,0 +1,6 @@
+E:\Nauka\.NET - Moje wypociny\PexForFun\PexForFun\bin\Debug\PexForFun.exe
+E:\Nauka\.NET - Moje wypociny\PexForFun\PexForFun\bin\Debug\PexForFun.pdb
+E:\Nauka\.NET - Moje wypociny\PexForFun\PexForFun\obj\x86\Debug\PexForFun.exe
+E:\Nauka\.NET - Moje wypociny\PexForFun\PexForFun\obj\x86\Debug\PexForFun.pdb
+E:\Nauka\.NET - Moje wypociny\PexForFun\PexForFun\bin\Debug\PexForFun.exe.config
+E:\Nauka\.NET - Moje wypociny\PexForFun\PexForFun\obj\x86\Debug\PexForFun.csprojResolveAssemblyReference.cache
