@@ -1,11 +1,12 @@
 ﻿@using SportsStore.Domain.Entities
-@model IEnumerable<Product>
+@using SportsStore.WebUI.Models
+@model ProductsListViewModel
 
 @{
     ViewBag.Title = "Products";
 }
 
-@foreach (var p in Model)
+@foreach (var p in Model.Products)
 {
     <div>
         <h3>@p.Name</h3>
@@ -13,3 +14,7 @@
         <h4>@p.Price.ToString("c")</h4>
     </div>
 }
+
+<div>
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x}))
+</div>
