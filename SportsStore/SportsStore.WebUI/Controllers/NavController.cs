@@ -16,8 +16,10 @@ namespace SportsStore.WebUI.Controllers
             this.repository = repository;
         }
 
-        public PartialViewResult Menu()
+        public PartialViewResult Menu(string category = null)
         {
+            this.ViewBag.SelectedCategory = category;
+
             IEnumerable<string> categories = repository.Products
                 .Select(x => x.Category)
                 .Distinct()
