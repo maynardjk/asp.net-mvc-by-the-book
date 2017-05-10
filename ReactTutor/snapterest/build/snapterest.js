@@ -26693,7 +26693,9 @@ var Application = React.createClass({
 
 module.exports = Application;
 
-},{"./Collection.react":210,"./Stream.react":213,"react":188}],210:[function(require,module,exports){
+},{"./Collection.react":211,"./Stream.react":216,"react":188}],210:[function(require,module,exports){
+
+},{}],211:[function(require,module,exports){
 var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var CollectionControls = require('./CollectionControls.react');
@@ -26748,9 +26750,91 @@ var Collection = React.createClass({
 
 module.exports = Collection;
 
-},{"./CollectionControls.react":211,"./Header.react":212,"./TweetList.react":216,"react":188,"react-dom/server":61}],211:[function(require,module,exports){
+},{"./CollectionControls.react":212,"./Header.react":215,"./TweetList.react":219,"react":188,"react-dom/server":61}],212:[function(require,module,exports){
+var React = require('react');
+var Header = require('./Header.react');
+var Button = require('./Button.react');
+var CollectionRenameForm = require('./CollectionRenameForm.react');
+var CollectionExportForm = require('./CollectionExportForm.react');
 
-},{}],212:[function(require,module,exports){
+var CollectionControls = React.createClass({
+	displayName: 'CollectionControls',
+
+	getInitialState: function () {
+		return {
+			name: 'new',
+			isEditingName: false
+		};
+	},
+
+	getHeaderText: function () {
+		var numberOfTweetsInCollection = this.props.numberOfTweetsInCollection;
+		var text = numberOfTweetsInCollection;
+
+		if (numberOfTweetsInCollection === 1) {
+			text = text + ' tweet in your';
+		} else {
+			text = text + ' tweets in your';
+		}
+
+		return React.createElement(
+			'span',
+			null,
+			text,
+			' ',
+			React.createElement(
+				'strong',
+				null,
+				this.state.name
+			),
+			' collection'
+		);
+	},
+
+	toggleEditCollectionName: function () {
+		this.setState({
+			isEditingName: !this.state.isEditingName
+		});
+	},
+
+	setCollectionName: function () {
+		this.setState({
+			name: name,
+			isEditingName: false
+		});
+	},
+
+	render: function () {
+		if (this.state.isEditingName) {
+			return React.createElement(CollectionRenameForm, {
+				name: this.state.name,
+				onChangeCollectionName: this.setCollectionName,
+				onCancelCollectionNameChange: this.toggleEditCollectionName
+			});
+		}
+
+		return React.createElement(
+			'div',
+			null,
+			React.createElement(Header, { text: this.getHeaderText() }),
+			React.createElement(Button, {
+				label: 'Rename collection',
+				handleClick: this.toggleEditCollectionName }),
+			React.createElement(Button, {
+				label: 'Empty collection',
+				handleClick: this.props.onRemoveAllTweetsFromCollection }),
+			React.createElement(CollectionExportForm, { htmlMarkup: this.props.htmlMkarkup })
+		);
+	}
+});
+
+module.exports = CollectionControls;
+
+},{"./Button.react":210,"./CollectionExportForm.react":213,"./CollectionRenameForm.react":214,"./Header.react":215,"react":188}],213:[function(require,module,exports){
+
+},{}],214:[function(require,module,exports){
+
+},{}],215:[function(require,module,exports){
 var React = require('react');
 
 var headerStyle = {
@@ -26781,7 +26865,7 @@ var Header = React.createClass({
 
 module.exports = Header;
 
-},{"react":188}],213:[function(require,module,exports){
+},{"react":188}],216:[function(require,module,exports){
 var React = require('react');
 var SnapkiteStreamClient = require('snapkite-stream-client');
 var StreamTweet = require('./StreamTweet.react');
@@ -26825,7 +26909,7 @@ var Stream = React.createClass({
 
 module.exports = Stream;
 
-},{"./Header.react":212,"./StreamTweet.react":214,"react":188,"snapkite-stream-client":189}],214:[function(require,module,exports){
+},{"./Header.react":215,"./StreamTweet.react":217,"react":188,"snapkite-stream-client":189}],217:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Header = require('./Header.react');
@@ -26922,7 +27006,7 @@ var StreamTweet = React.createClass({
 
 module.exports = StreamTweet;
 
-},{"./Header.react":212,"./Tweet.react":215,"react":188,"react-dom":60}],215:[function(require,module,exports){
+},{"./Header.react":215,"./Tweet.react":218,"react":188,"react-dom":60}],218:[function(require,module,exports){
 var React = require('react');
 
 var tweetStyle = {
@@ -26980,6 +27064,54 @@ var Tweet = React.createClass({
 
 module.exports = Tweet;
 
-},{"react":188}],216:[function(require,module,exports){
+},{"react":188}],219:[function(require,module,exports){
+var React = require('react');
+var Tweet = require('./Tweet.react');
 
-},{}]},{},[208]);
+var listStyle = {
+	padding: '0'
+};
+
+var listItemStyle = {
+	display: 'inline-block',
+	listStyle: 'none'
+};
+
+var TweetList = React.createClass({
+	displayName: 'TweetList',
+
+	getListOfTweetIds: function () {
+		return Object.keys(this.props.tweets);
+	},
+
+	getTweetElement: function (tweetId) {
+		var tweet = this.props.tweets[tweetId];
+		var handleRemoveTweetFromCollection = this.props.onRemoveTweetFromCollection;
+		var tweetElement;
+
+		if (handleRemoveTweetFromCollection) {
+			tweetElement = React.createElement(Tweet, { tweet: tweet, onImageClick: handleRemoveTweetFromCollection });
+		} else {
+			tweetElement = React.createElement(Tweet, { tweet: tweet });
+		}
+
+		return React.createElement(
+			'li',
+			{ style: listItemStyle, key: tweet.id },
+			tweetElement
+		);
+	},
+
+	render: function () {
+		var tweetElements = this.getListOfTweetIds().map(this.getTweetElement);
+		return React.createElement(
+			'ul',
+			{ style: listStyle },
+			tweetElements
+		);
+	}
+});
+
+module.exports = TweetList;
+
+},{"./Tweet.react":218,"react":188}]},{},[208]);
