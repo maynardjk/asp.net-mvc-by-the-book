@@ -26675,7 +26675,7 @@ var Application = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'col-md-4 text-center' },
-					React.createElement(Stream, { onAddToTweetCollection: this.addToTweetCollection })
+					React.createElement(Stream, { onAddTweetToCollection: this.addTweetToCollection })
 				),
 				React.createElement(
 					'div',
@@ -26694,8 +26694,30 @@ var Application = React.createClass({
 module.exports = Application;
 
 },{"./Collection.react":211,"./Stream.react":216,"react":188}],210:[function(require,module,exports){
+var React = require('react');
 
-},{}],211:[function(require,module,exports){
+var buttonStyle = {
+	margin: '10px 10px 10px 0'
+};
+
+var Button = React.createClass({
+	displayName: 'Button',
+
+	render: function () {
+		return React.createElement(
+			'button',
+			{
+				className: 'btn btn-default',
+				style: buttonStyle,
+				onClick: this.props.handleClick },
+			this.props.label
+		);
+	}
+});
+
+module.exports = Button;
+
+},{"react":188}],211:[function(require,module,exports){
 var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var CollectionControls = require('./CollectionControls.react');
@@ -26797,7 +26819,7 @@ var CollectionControls = React.createClass({
 		});
 	},
 
-	setCollectionName: function () {
+	setCollectionName: function (name) {
 		this.setState({
 			name: name,
 			isEditingName: false
@@ -26823,7 +26845,7 @@ var CollectionControls = React.createClass({
 			React.createElement(Button, {
 				label: 'Empty collection',
 				handleClick: this.props.onRemoveAllTweetsFromCollection }),
-			React.createElement(CollectionExportForm, { htmlMarkup: this.props.htmlMkarkup })
+			React.createElement(CollectionExportForm, { htmlMarkup: this.props.htmlMarkup })
 		);
 	}
 });
@@ -26831,10 +26853,102 @@ var CollectionControls = React.createClass({
 module.exports = CollectionControls;
 
 },{"./Button.react":210,"./CollectionExportForm.react":213,"./CollectionRenameForm.react":214,"./Header.react":215,"react":188}],213:[function(require,module,exports){
+var React = require('react');
 
-},{}],214:[function(require,module,exports){
+var formStyle = {
+	display: 'inline-block'
+};
 
-},{}],215:[function(require,module,exports){
+var CollectionExportForm = React.createClass({
+	displayName: 'CollectionExportForm',
+
+	render: function () {
+		return React.createElement(
+			'form',
+			{ action: 'http://codepen.io/pen/define', method: 'POST', target: '_blank', style: formStyle },
+			React.createElement('input', { type: 'hidden', name: 'data', value: this.props.htmlMarkup }),
+			React.createElement(
+				'button',
+				{ type: 'submit', className: 'btn btn-default' },
+				'Export as HTML'
+			)
+		);
+	}
+});
+
+module.exports = CollectionExportForm;
+
+},{"react":188}],214:[function(require,module,exports){
+var React = require('react');
+var ReactDOM = require('react-dom');
+var Header = require('./Header.react');
+var Button = require('./Button.react');
+
+var inputStyle = {
+	marginRight: '5px'
+};
+
+var CollectionRenameForm = React.createClass({
+	displayName: 'CollectionRenameForm',
+
+	getInitialState: function () {
+		return {
+			inputValue: this.props.name
+		};
+	},
+
+	setInputValue: function (inputValue) {
+		this.setState({
+			inputValue: inputValue
+		});
+	},
+
+	handleInputValueChange: function (event) {
+		var inputValue = event.target.value;
+		this.setInputValue(inputValue);
+	},
+
+	handleFormSubmit: function (event) {
+		event.preventDefault();
+		var collectionName = this.state.inputValue;
+		this.props.onChangeCollectionName(collectionName);
+	},
+
+	handleFormCancel: function (event) {
+		event.preventDefault();
+		var collectionName = this.props.name;
+		this.setInputValue(collectionName);
+		this.props.onCancelCollectionNameChange();
+	},
+
+	componentDidMount: function () {
+		this.refs.collectionName.focus();
+	},
+
+	render: function () {
+		return React.createElement(
+			'form',
+			{ className: 'form-inline', onSubmit: this.handleSubmit },
+			React.createElement(Header, { text: 'Collection name: ' }),
+			React.createElement(
+				'div',
+				{ className: 'form-group' },
+				React.createElement('input', {
+					className: 'form-control',
+					style: inputStyle,
+					onChange: this.handleInputValueChange,
+					value: this.state.inputValue,
+					ref: 'collectionName' })
+			),
+			React.createElement(Button, { label: 'Change', handleClick: this.handleFormSubmit }),
+			React.createElement(Button, { label: 'Cancel', handleClick: this.handleFormCancel })
+		);
+	}
+});
+
+module.exports = CollectionRenameForm;
+
+},{"./Button.react":210,"./Header.react":215,"react":188,"react-dom":60}],215:[function(require,module,exports){
 var React = require('react');
 
 var headerStyle = {
@@ -26896,7 +27010,7 @@ var Stream = React.createClass({
 	},
 
 	render: function () {
-		var tweet = this.satt.tweet;
+		var tweet = this.state.tweet;
 		if (tweet) {
 			return React.createElement(StreamTweet, {
 				tweet: tweet,
@@ -26919,7 +27033,7 @@ var StreamTweet = React.createClass({
 	displayName: 'StreamTweet',
 
 
-	getinitialState: function () {
+	getInitialState: function () {
 		console.log('[Snapterest] StreamTweet: Running getInitialState()');
 		return {
 			numberOfCharactersIsIncreasing: null,
@@ -26935,7 +27049,7 @@ var StreamTweet = React.createClass({
 		});
 
 		window.snapterest = {
-			numberOfReveivedTweets: 1,
+			numberOfReceivedTweets: 1,
 			numberOfDisplayedTweets: 1
 		};
 	},
@@ -26947,7 +27061,7 @@ var StreamTweet = React.createClass({
 		window.snapterest.tweetHtml = componentDOMRepresentation.children[1].outerHTML;
 	},
 
-	componentWillReveiveProps: function () {
+	componentWillReceiveProps: function (nextProps) {
 		console.log('[Snapterest] StreamTweet: Running componentWillReveiveProps()');
 		var currentTweetLength = this.props.tweet.text.length;
 		var nextTweetLength = nextProps.tweet.text.length;
@@ -26968,11 +27082,11 @@ var StreamTweet = React.createClass({
 			headerText: headerText
 		});
 
-		window.snapterest.numberOfReveivedTweets++;
+		window.snapterest.numberOfReceivedTweets++;
 	},
 
-	shouldComponentUpdate: function () {
-		consle.log('[Snapterest] StreamTweet: Running shouldComponentUpdate()');
+	shouldComponentUpdate: function (nextProps, nextState) {
+		console.log('[Snapterest] StreamTweet: Running shouldComponentUpdate()');
 		return nextProps.tweet.text.length > 1;
 	},
 

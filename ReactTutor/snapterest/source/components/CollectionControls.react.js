@@ -36,7 +36,7 @@ var CollectionControls = React.createClass({
 		});
 	},
 	
-	setCollectionName: function(){
+	setCollectionName: function(name){
 		this.setState({
 			name: name,
 			isEditingName: false
@@ -63,7 +63,7 @@ var CollectionControls = React.createClass({
 				<Button
 					label="Empty collection"
 					handleClick={this.props.onRemoveAllTweetsFromCollection} />
-				<CollectionExportForm htmlMarkup={this.props.htmlMkarkup} />
+				<CollectionExportForm htmlMarkup={this.props.htmlMarkup} />
 			</div>
 		);
 	}

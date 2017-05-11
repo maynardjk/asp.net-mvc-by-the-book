@@ -3,12 +3,12 @@ var Tweet = require('./Tweet.react');
 
 var listStyle = {
 	padding: '0'
-}
+};
 
 var listItemStyle = {
 	display: 'inline-block',
 	listStyle: 'none'
-}
+};
 
 var TweetList = React.createClass({
 	getListOfTweetIds: function() {
