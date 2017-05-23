@@ -2,7 +2,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 
 function receiveTweet(tweet){
 	var action = {
-		type: 'reveive_tweet',
+		type: 'receive_tweet',
 		tweet: tweet
 	};
 	

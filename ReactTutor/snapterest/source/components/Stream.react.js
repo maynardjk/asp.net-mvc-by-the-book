@@ -7,16 +7,16 @@ var Stream = React.createClass({
 	
 	getInitialState: function(){
 		return {
-			tweet: TweetStore.getTweet();
+			tweet: TweetStore.getTweet()
 		};
 	},
 	
-	componentDidMount: function()}{
+	componentDidMount: function(){
 		TweetStore.addChangeListener(this.onTweetChange);
 	},
 	
 	componentWillUnmount: function(){
-		Tweetstore.removeChangeListener(this.onTweetChange);
+		TweetStore.removeChangeListener(this.onTweetChange);
 	},
 	
 	onTweetChange: function(){
