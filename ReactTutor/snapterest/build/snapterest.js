@@ -27985,9 +27985,9 @@ var Dispatcher = require('flux').Dispatcher;
 module.exports = new Dispatcher();
 
 },{"flux":51}],228:[function(require,module,exports){
-var AppDispatcher = reruire('../dispatcher/AppDispatcher');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var assign = require(object - assign);
+var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
@@ -28057,7 +28057,7 @@ function handleAction(action) {
 CollectionStore.dispatchToken = AppDispatcher.register(handleAction);
 module.exports = CollectionStore;
 
-},{"events":24}],229:[function(require,module,exports){
+},{"../dispatcher/AppDispatcher":227,"events":24,"object-assign":60}],229:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
