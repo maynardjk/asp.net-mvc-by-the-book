@@ -66,7 +66,7 @@ var Collection = React.createClass({
 			);
 		}
 		
-		return <Header tex="Your collection is empty" />;
+		return <Header text="Your collection is empty" />;
 	}
 });
 

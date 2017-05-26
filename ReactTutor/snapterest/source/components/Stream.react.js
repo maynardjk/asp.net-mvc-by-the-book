@@ -8,7 +8,7 @@ var Stream = React.createClass({
 	getInitialState: function(){
 		return {
 			tweet: TweetStore.getTweet()
-		};
+		}
 	},
 	
 	componentDidMount: function(){

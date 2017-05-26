@@ -27509,7 +27509,7 @@ var Collection = React.createClass({
 			);
 		}
 
-		return React.createElement(Header, { tex: 'Your collection is empty' });
+		return React.createElement(Header, { text: 'Your collection is empty' });
 	}
 });
 
@@ -27654,7 +27654,7 @@ var CollectionRenameForm = React.createClass({
 		event.preventDefault();
 		var collectionName = this.state.inputValue;
 		CollectionActionCreators.setCollectionName(collectionName);
-		this.props.onCancelCollectionNameChange(collectionName);
+		this.props.onCancelCollectionNameChange();
 	},
 
 	handleFormCancel: function (event) {
@@ -27858,7 +27858,7 @@ var StreamTweet = React.createClass({
 			null,
 			React.createElement(Header, { text: this.state.headerText }),
 			React.createElement(Tweet, {
-				tweet: tweet,
+				tweet: this.props.tweet,
 				onImageClick: this.addTweetToCollection })
 		);
 	}

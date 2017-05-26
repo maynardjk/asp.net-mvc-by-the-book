@@ -31,7 +31,7 @@ var CollectionRenameForm = React.createClass({
 		event.preventDefault();
 		var collectionName = this.state.inputValue;
 		CollectionActionCreators.setCollectionName(collectionName);
-		this.props.onCancelCollectionNameChange(collectionName);
+		this.props.onCancelCollectionNameChange();
 	},
 	
 	handleFormCancel: function(event){
